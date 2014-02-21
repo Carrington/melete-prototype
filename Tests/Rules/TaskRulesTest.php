@@ -9,11 +9,22 @@ class TaskRulesTest extends TestCase
 {
 	$taskRulesObj = new Rules();
 
+	public function setUp() {
+		
+	}
+
 	/**
 	 * @dataProvider provideConfigMock
 	 */
-	public function testValidateTaskNameLengthNegative($config) {
+	public function testLoadConfig($config) {
 		$this->taskRulesObj->loadConfig($config);
+		$this->assertEquals($this->taskRulesObj->getConfig(), $config);
+	}
+
+	/**
+	 * @depends testLoadConfig
+	 */
+	public function testValidateTaskNameLengthNegative($config) {
 		$this->assertFalse($this->taskRulesObj->validateName("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
 	}
 
@@ -25,10 +36,9 @@ class TaskRulesTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider provideConfigMock
+	 * @depends testLoadConfig
 	 */
-	public function testValidateTaskNameCharactersNegative($config) {
-		$this->taskRulesObj->loadConfig($config);
+	public function testValidateTaskNameCharactersNegative() {
 		$this->assertFalse($this->taskRulesObj->validateName("Th!sisaname");
 	}
 
@@ -41,10 +51,9 @@ class TaskRulesTest extends TestCase
 	}
 	
 	/**
-	 * @dataProvider providerConfigMock
+	 * @depends testLoadConfig
 	 */
-	public function testValidateTaskMinimumIntervalNegative($config) {
-		$this->taskRulesObj->loadConfig($config);
+	public function testValidateTaskMinimumIntervalNegative() {
 		$this->assertFalse($this->taskRulesObj->validateInterval(299);
 	}
 
@@ -56,9 +65,9 @@ class TaskRulesTest extends TestCase
 	)
 	
 	/**
-	 * @dataProvider provideConfigMock
+	 * @depends testLoadConfig
 	 */
-	public function testValidateTaskMaximumIntervalNegative($config) {
+	public function testValidateTaskMaximumIntervalNegative() {
 		$this->taskRulesObj->loadConfig($config);
 		$this->assertFalse($this->taskRulesObj->validateInterval(788940001);
 	}
@@ -69,6 +78,10 @@ class TaskRulesTest extends TestCase
 	public function testValidateTaskMaximumIntervalPositive() {
 		$this->assertTrue(788940000);
 	}
+
+	/**
+	 *
+	 */
 
 
 	/**
