@@ -44,6 +44,7 @@ class TaskRulesTest extends TestCase
 	 * @dataProvider providerConfigMock
 	 */
 	public function testValidateTaskMinimumIntervalNegative($config) {
+		$this->taskRulesObj->loadConfig($config);
 		$this->assertFalse($this->taskRulesObj->validateInterval(299);
 	}
 
@@ -51,9 +52,25 @@ class TaskRulesTest extends TestCase
 	 * @depends testValidateTaskMinimumIntervalNegative
 	 */
 	public function testValidateTaskMinimumIntervalPositive() {
-		$this->assertTrue($this->taskRulesObj->validateInterval(788940001);
+		$this->assertTrue($this->taskRulesObj->validateInterval(300);
 	)
 	
+	/**
+	 * @dataProvider provideConfigMock
+	 */
+	public function testValidateTaskMaximumIntervalNegative($config) {
+		$this->taskRulesObj->loadConfig($config);
+		$this->assertFalse($this->taskRulesObj->validateInterval(788940001);
+	}
+
+	/**
+	 * @depends testValidateTaskMaximumIntervalNegative
+	 */
+	public function testValidateTaskMaximumIntervalPositive() {
+		$this->assertTrue(788940000);
+	}
+
+
 	/**
 	 * Mocks the interface for 
 	 * Melete\Objects\ConfigurationProvider::getConfigAsMap()
