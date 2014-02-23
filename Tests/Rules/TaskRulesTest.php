@@ -80,8 +80,19 @@ class TaskRulesTest extends TestCase
 	}
 
 	/**
-	 *
+	 * @depends testLoadConfig
 	 */
+	public function testValidateTaskGlobalLimitDailyNegative() {
+		$this->assertFalse($this->taskRulesObj->validateDailyLimit(51));
+	}
+
+	/**
+	 * @depends testValidateTaskGlobalLimitDailyNegative
+	 */
+	public function testValidateTaskGlobalLimitDailyPositive() {
+		$this->assertTrue($this
+	}
+	
 
 
 	/**
@@ -113,7 +124,9 @@ class TaskRulesTest extends TestCase
                                 //task.user-limits.weekly
 				"weekly" => 300,
 				//task.user-limits.monthly
-				"monthly" => 900
+				"monthly" => 900,
+				//task.userlimits.override
+				"override" => true
 			),
 			//task.minimum-account
 			"minimum-account" => "registered"
