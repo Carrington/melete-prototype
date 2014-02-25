@@ -90,6 +90,9 @@ class TaskRulesTest extends TestCase
 	 * @depends testValidateTaskGlobalLimitDailyNegative
 	 */
 	public function testValidateTaskGlobalLimitDailyPositive() {
+		$user = $this->getMockBuilder('Melete\Business\User')
+		->setConstructorArgs()
+		->getMock();
 		$this->assertTrue($this
 	}
 	
@@ -97,8 +100,16 @@ class TaskRulesTest extends TestCase
 
 	/**
 	 * Mocks the interface for 
-	 * Melete\Objects\ConfigurationProvider::getConfigAsMap()
+	 * Melete\Objects\ConfigurationProvider::getConfigAsMap('TaskRules')
 	 * where 'TaskRules' is the specified configuration section.
+	 *
+	 * Assumes the following: that there is some class ConfigurationProvider
+	 * which is instantiated for any given reading of the rules, and
+         * that rules are passed into it.
+	 * 
+	 * Actually this sucks. At some point refactor so that 
+	 * ConfigurationProvider is injected into the TaskObj constructor and 
+	 * override the mock getConfigAsMap('TaskRules') to return the below.
 	 */
 	public function provideConfigMock()
 	{
