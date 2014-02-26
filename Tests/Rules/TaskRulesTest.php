@@ -18,7 +18,7 @@ class TaskRulesTest extends TestCase
 	 */
 	public function testLoadConfig($config) {
 		$this->taskRulesObj->loadConfig($config);
-		$this->assertEquals($this->taskRulesObj->getConfig(), $config);
+		$this->assertEquals($this->taskRulesObj->getConfig(), $config->getConfigAsMap());
 	}
 
 	/**
@@ -99,21 +99,13 @@ class TaskRulesTest extends TestCase
 
 
 	/**
-	 * Mocks the interface for 
-	 * Melete\Objects\ConfigurationProvider::getConfigAsMap('TaskRules')
-	 * where 'TaskRules' is the specified configuration section.
-	 *
-	 * Assumes the following: that there is some class ConfigurationProvider
-	 * which is instantiated for any given reading of the rules, and
-         * that rules are passed into it.
-	 * 
-	 * Actually this sucks. At some point refactor so that 
-	 * ConfigurationProvider is injected into the TaskObj constructor and 
-	 * override the mock getConfigAsMap('TaskRules') to return the below.
+	 * Mock for Melete\Business\ConfigurationProvider
 	 */
 	public function provideConfigMock()
 	{
-		return array(
+		$configProvider = $this->getMockBuilder('Melete\Business\ConfigurationProvider')
+					->getMock();
+		$response =  array(
 			//task.name
 			"name" => array (
 				//task.name.length
@@ -142,6 +134,12 @@ class TaskRulesTest extends TestCase
 			//task.minimum-account
 			"minimum-account" => "registered"
 		);
+
+		$configProvider->expects($this->once())
+                                ->method('getConfigAsMap')
+                                ->will($this->returnValue($response));
+		return $configProvider;
+
 	}
 
 	
