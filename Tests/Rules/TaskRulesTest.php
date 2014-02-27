@@ -90,9 +90,6 @@ class TaskRulesTest extends TestCase
 	 * @depends testValidateTaskGlobalLimitDailyNegative
 	 */
 	public function testValidateTaskGlobalLimitDailyPositive() {
-		$user = $this->getMockBuilder('Melete\Business\User')
-		->setConstructorArgs()
-		->getMock();
 		$this->assertTrue($this
 	}
 	
@@ -140,6 +137,16 @@ class TaskRulesTest extends TestCase
                                 ->will($this->returnValue($response));
 		return $configProvider;
 
+	}
+
+	/**
+	 * Mock for Melete\Business\User
+	 */
+	public function provideUserMock() {
+		$user = $this->getMockBuilder('Melete\Business\User')
+	                ->setConstructorArgs()
+        	        ->getMock();
+		return $user;
 	}
 
 	
