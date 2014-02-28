@@ -7,10 +7,10 @@ use PHPUnit\Framework\TestCase as TestCase;
  
 class TaskRulesTest extends TestCase 
 {
-	$taskRulesObj = new Rules();
+	protected $taskRulesObj;
 
 	public function setUp() {
-		
+		$this->taskRulesObj = new Rules();
 	}
 
 	/**
@@ -24,7 +24,7 @@ class TaskRulesTest extends TestCase
 	/**
 	 * @depends testLoadConfig
 	 */
-	public function testValidateTaskNameLengthNegative($config) {
+	public function testValidateTaskNameLengthNegative() {
 		$this->assertFalse($this->taskRulesObj->validateName("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
 	}
 
@@ -32,14 +32,16 @@ class TaskRulesTest extends TestCase
 	 * @depends testValidateTaskNameLengthNegative
 	 */
 	public function testValidateTaskNameLengthPositive() {
-		$this->assertTrue($this->taskRulesObj->validateName("AAAAAAAAAA");
+		$this->assertTrue($this->taskRulesObj
+                        ->validateName("AAAAAAAAAA"));
 	}
 
 	/**
 	 * @depends testLoadConfig
 	 */
 	public function testValidateTaskNameCharactersNegative() {
-		$this->assertFalse($this->taskRulesObj->validateName("Th!sisaname");
+		$this->assertFalse($this->taskRulesObj
+                        ->validateName("Th!sisaname"));
 	}
 
 
@@ -47,29 +49,31 @@ class TaskRulesTest extends TestCase
 	 * @depends testValidateTaskNameCharactersNegative
 	 */
 	public function testValidateTaskNameCharactersPositive() {
-		$this->assertTrue($this->taskRulesObj->validateName("Thisisaname");
+		$this->assertTrue($this->taskRulesObj
+                        ->validateName("Thisisaname"));
 	}
 	
 	/**
 	 * @depends testLoadConfig
 	 */
 	public function testValidateTaskMinimumIntervalNegative() {
-		$this->assertFalse($this->taskRulesObj->validateInterval(299);
+		$this->assertFalse($this->taskRulesObj->validateInterval(299));
 	}
 
 	/**
 	 * @depends testValidateTaskMinimumIntervalNegative
 	 */
 	public function testValidateTaskMinimumIntervalPositive() {
-		$this->assertTrue($this->taskRulesObj->validateInterval(300);
-	)
+		$this->assertTrue($this->taskRulesObj
+                        ->validateInterval(300));
+        }
 	
 	/**
 	 * @depends testLoadConfig
 	 */
 	public function testValidateTaskMaximumIntervalNegative() {
-		$this->taskRulesObj->loadConfig($config);
-		$this->assertFalse($this->taskRulesObj->validateInterval(788940001);
+		$this->assertFalse($this->taskRulesObj
+                        ->validateInterval(788940001));
 	}
 
 	/**
@@ -81,19 +85,172 @@ class TaskRulesTest extends TestCase
 
 	/**
 	 * @depends testLoadConfig
+         * @dataProvider provideUserMock
 	 */
-	public function testValidateTaskGlobalLimitDailyNegative() {
-		$this->assertFalse($this->taskRulesObj->validateDailyLimit(51));
+	public function testValidateTaskGlobalLimitDailyNegative($user) {
+            $user->expects($this->once())->method('getDailyLimitOverride')
+                    ->will($this->returnValue(false));
+            $user->expects($this->once())->method('getUserID')
+                    ->will($this->returnValue(1));
+            //implies TaskRules keeps a list of users to check.
+            $this->taskRulesObj->clearUsers();
+            $this->taskRulesObj->addUser($user);
+            //implies current count of daily reminders, current user ID in 
+            //question
+            $this->assertFalse($this->taskRulesObj->validateDailyLimit(51, 1));
 	}
 
 	/**
 	 * @depends testValidateTaskGlobalLimitDailyNegative
+         * @dataProvider provideUserMock
 	 */
-	public function testValidateTaskGlobalLimitDailyPositive() {
-		$this->assertTrue($this
+	public function testValidateTaskUserLimitDailyPositive($user) {
+            $user->expects($this->once())->method('getDailyLimitOverride')
+                    ->will($this->returnValue(true));
+            $user->expects($this->once())->method('getDailyLimit')
+                    ->will($this->returnValue(60));
+            $user->expects($this->once())->method('getUserID')
+                    ->will($this->returnValue(1));
+            $this->taskRulesObj->clearUsers();
+            $this->taskRulesObj->addUser($user);
+            $this->assertTrue($this->taskRulesObj->validateDailyLimit(51, 1));
+	}
+        
+        /**
+         * @depends testValidateTaskUserLimitDailyPositive
+         * @dataProvider provideUserMock
+         */
+        public function testValidateTaskUserLimitDailyNegative($user) {
+            $user->expects($this->once())->method('getDailyLimitOverride')
+                    ->will($this->returnValue(true));
+            $user->expects($this->once())->method('getDailyLimit')
+                    ->will($this->returnValue(40));
+            $user->expects($this->once())->method('getUserID')
+                    ->will($this->returnValue(1));
+            $this->taskRulesObj->clearUsers();
+            $this->taskRulesObj->addUser($user);
+            $this->assertTrue($this->taskRulesObj->validateDailyLimit(51, 1));
+        }
+        
+        /**
+	 * @depends testLoadConfig
+         * @dataProvider provideUserMock
+	 */
+	public function testValidateTaskGlobalLimitWeeklyNegative($user) {
+            $user->expects($this->once())->method('getWeeklyLimitOverride')
+                    ->will($this->returnValue(false));
+            $user->expects($this->once())->method('getUserID')
+                    ->will($this->returnValue(1));
+            $this->taskRulesObj->clearUsers();
+            $this->taskRulesObj->addUser($user);
+            $this->assertFalse($this->taskRulesObj->validateWeeklyLimit(51, 1));
 	}
 	
-
+        /**
+	 * @depends testValidateTaskGlobalLimitWeeklyNegative
+         * @dataProvider provideUserMock
+	 */
+	public function testValidateTaskUserLimitWeeklyPositive($user) {
+            $user->expects($this->once())->method('getWeeklyLimitOverride')
+                    ->will($this->returnValue(true));
+            $user->expects($this->once())->method('getWeeklyLimit')
+                    ->will($this->returnValue(60));
+            $user->expects($this->once())->method('getUserID')
+                    ->will($this->returnValue(1));
+            $this->taskRulesObj->clearUsers();
+            $this->taskRulesObj->addUser($user);
+            $this->assertTrue($this->taskRulesObj->validateWeeklyLimit(51, 1));
+	}
+        
+        /**
+         * @depends testValidateTaskUserLimitWeeklyPositive
+         * @dataProvider provideUserMock
+         */
+        public function testValidateTaskUserLimitWeeklyNegative($user) {
+            $user->expects($this->once())->method('getWeeklyLimitOverride')
+                    ->will($this->returnValue(true));
+            $user->expects($this->once())->method('getWeeklyLimit')
+                    ->will($this->returnValue(40));
+            $user->expects($this->once())->method('getUserID')
+                    ->will($this->returnValue(1));
+            $this->taskRulesObj->clearUsers();
+            $this->taskRulesObj->addUser($user);
+            $this->assertTrue($this->taskRulesObj->validateWeeklyLimit(51, 1));
+        }
+        
+        /**
+	 * @depends testLoadConfig
+         * @dataProvider provideUserMock
+	 */
+	public function testValidateTaskGlobalLimitMonthlyNegative($user) {
+            $user->expects($this->once())->method('getMonthlyLimitOverride')
+                    ->will($this->returnValue(false));
+            $user->expects($this->once())->method('getUserID')
+                    ->will($this->returnValue(1));
+            $this->taskRulesObj->clearUsers();
+            $this->taskRulesObj->addUser($user);
+            $this->assertFalse($this->taskRulesObj->validateMonthlyLimit(51, 1));
+	}
+	
+        /**
+	 * @depends testValidateTaskGlobalLimitMonthlyNegative
+         * @dataProvider provideUserMock
+	 */
+	public function testValidateTaskUserLimitMonthlyPositive($user) {
+            $user->expects($this->once())->method('getMonthlyLimitOverride')
+                    ->will($this->returnValue(true));
+            $user->expects($this->once())->method('getMonthlyLimit')
+                    ->will($this->returnValue(60));
+            $user->expects($this->once())->method('getUserID')
+                    ->will($this->returnValue(1));
+            $this->taskRulesObj->clearUsers();
+            $this->taskRulesObj->addUser($user);
+            $this->assertTrue($this->taskRulesObj->validateMonthlyLimit(51, 1));
+	}
+        
+        /**
+         * @depends testValidateTaskUserLimitMonthlyPositive
+         * @dataProvider provideUserMock
+         */
+        public function testValidateTaskUserLimitMonthlyNegative($user) {
+            $user->expects($this->once())->method('getMonthlyLimitOverride')
+                    ->will($this->returnValue(true));
+            $user->expects($this->once())->method('getMonthlyLimit')
+                    ->will($this->returnValue(40));
+            $user->expects($this->once())->method('getUserID')
+                    ->will($this->returnValue(1));
+            $this->taskRulesObj->clearUsers();
+            $this->taskRulesObj->addUser($user);
+            $this->assertTrue($this->taskRulesObj->validateMonthlyLimit(51, 1));
+        }
+        
+        /**
+         * @depends testLoadConfig
+         * @dataProvider provideUserMock
+         */
+        public function testValidateTaskUserLevelNegative($user) {
+            $user->expects($this->once())->method('getUserAccountType')
+                    ->will($this->returnValue('guest'));
+            $user->expects($this->once())->method('getUserID')
+                    ->will($this->returnValue(1));
+            $this->taskRulesObj->clearUsers();
+            $this->taskRulesObj->addUser($user);
+            $this->assertFalse($this->taskRulesObj->validateUserCreateTask(1));
+        }
+        
+        /**
+         * @depends testValidateTaskUserLevelNegative
+         * @dataProvider provideUserMock
+         */
+        public function testValidateTaskUserLevelPositive($user) {
+            $user->expects($this->once())->method('getUserAccountType')
+                    ->will($this->returnValue('registered'));
+            $user->expects($this->once())->method('getUserID')
+                    ->will($this->returnValue(1));
+            $this->taskRulesObj->clearUsers();
+            $this->taskRulesObj->addUser($user);
+            $this->assertTrue($this->taskRulesObj->validateUserCreateTask(1));
+        }
 
 	/**
 	 * Mock for Melete\Business\ConfigurationProvider
