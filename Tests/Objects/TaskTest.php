@@ -2,15 +2,15 @@
 
 namespace Melete\Tests\Objects;
 
-use Melete\Objects\Task.php as Task;
-use Melete\Objects\Reminder.php as Reminder;
+use Melete\Objects\Task as Task;
+use Melete\Objects\Reminder as Reminder;
 use PHPUnit\Framework\TestCase as TestCase;
 
 
 class TaskTest extends TestCase
 {
 
-	$taskObj;
+	private $taskObj;
 
 	public function setUp() {
 		$this->taskObj = new Task();

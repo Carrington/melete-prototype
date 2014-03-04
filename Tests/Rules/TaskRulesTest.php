@@ -2,7 +2,7 @@
 
 namespace Melete\Tests\Rules;
 
-use Melete\Rules\TaskRules.php as Rules;
+use Melete\Rules\TaskRules as Rules;
 use PHPUnit\Framework\TestCase as TestCase;
  
 class TaskRulesTest extends TestCase 
@@ -265,7 +265,7 @@ class TaskRulesTest extends TestCase
 				//task.name.length
 				"length" => 100,
 				//task.name.characters
-				"characters" => "[a-zA-Z0-9_- ]+"
+				"characters" => "/^[a-zA-Z0-9_- ]+/"
 			),
 			//task.interval
 			"interval" => array (

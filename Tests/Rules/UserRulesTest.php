@@ -2,7 +2,7 @@
 
 namespace Melete\Tests\Rules;
 
-use Melete\Rules\Rules.php as Rules;
+use Melete\Rules\Rules as Rules;
 use PHPUnit\Framework\TestCase as TestCase;
 
 /**

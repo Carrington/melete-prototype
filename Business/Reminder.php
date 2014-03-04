@@ -1,6 +1,6 @@
 <?php
 
-namespace Melete\Objects;
+namespace Melete\Business;
 
 class Reminder {
 
