@@ -7,27 +7,14 @@
  *
  * @author Dan
  */
+
+namespace Melete\Rules;
+
 class TaskRules extends AbstractRules
 {
     
-    private $users;
-    
     public function __construct() {
         $this->configuration = array();
-        $this->users = new SplDoublyLinkedList();
-        $this->users->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
-    }
-    
-    public function clearUsers() {
-        if ($this->users->isEmpty()) {
-            return;        
-        }
-        $this->users->setIteratorMode(SplDoublyLinkedList::IT_MODE_DELETE);
-        for($this->users->rewind();$this->users->valid();$this->users->next()) {
-            //My kingdom for the SplDoublyLinkedList::clear patch
-            //We're just tossing values overboard here. Nothing to see.
-        }
-        $this->users->setIteratorMode(SplDoublyLinkedList::IT_MODE_KEEP);
     }
     
     public function validateName($name) {
@@ -46,9 +33,33 @@ class TaskRules extends AbstractRules
         return ($min && $max);
     }
     
+    public function validateDailyLimit($user) {
+        if ($user->getDailyLimitOverride() && 
+            $this->getConfigValue('user-limits.override')) {
+            return ($user->getSentToday() <= $user->getDailyLimit());
+        }
+        return ($user->getSentToday() <= $this
+                ->getConfigValue('user-limits.daily'));
+    }
     
+    public function validateWeeklyLimit($user) {
+        if ($user->getWeeklyLimitOverride() &&
+                $this->getConfigValue('user-limits.override')) {
+            return ($user->getSentThisWeek() <= $user->getWeeklyLimit());
+        }
+        return ($user->getSentThisWeek() <= $this
+                ->getConfigValue('user-limits.weekly'));
+    }
     
-    
+    public function validateMonthlyLimit($user) {
+        if ($user->getMonthlyLimitOverride() &&
+                $this->getConfigValue('user-limits.override')) {
+            return ($user->getSentThisMonth() <= $user->getMonthlyLimit());
+        }
+        return ($user->getSentThisMonth() <= $this
+                ->getConfigValue('user-limits.monthly'));
+    }
+       
 }
 
 ?>

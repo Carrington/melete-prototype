@@ -3,6 +3,7 @@
 namespace Melete\Tests\Rules;
 
 use Melete\Rules\TaskRules as Rules;
+use Melete\Business\UserList as UserList;
 use PHPUnit\Framework\TestCase as TestCase;
  
 class TaskRulesTest extends TestCase 
@@ -10,7 +11,10 @@ class TaskRulesTest extends TestCase
 	protected $taskRulesObj;
 
 	public function setUp() {
-		$this->taskRulesObj = new Rules();
+                //At this time I can't come up with any way to inject a mock 
+                //dependency that would allow us to test UserList::clear().
+                $userList = new UserList();
+		$this->taskRulesObj = new Rules($userList);
 	}
 
 	/**
@@ -92,12 +96,10 @@ class TaskRulesTest extends TestCase
                     ->will($this->returnValue(false));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            //implies TaskRules keeps a list of users to check.
-            $this->taskRulesObj->clearUsers();
-            $this->taskRulesObj->addUser($user);
-            //implies current count of daily reminders, current user ID in 
-            //question
-            $this->assertFalse($this->taskRulesObj->validateDailyLimit(51, 1));
+            $user->expects($this->once()->method('getSentToday'))
+                    ->will($this->returnValue(51));
+            
+            $this->assertFalse($this->taskRulesObj->validateDailyLimit($user));
 	}
 
 	/**
@@ -111,9 +113,12 @@ class TaskRulesTest extends TestCase
                     ->will($this->returnValue(60));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $this->taskRulesObj->clearUsers();
-            $this->taskRulesObj->addUser($user);
-            $this->assertTrue($this->taskRulesObj->validateDailyLimit(51, 1));
+            $user->expects($this->once()->method('getSentToday'))
+                    ->will($this->returnValue(51));
+            
+            
+            $arrayExpected = array(1 => true);
+            $this->assertFalse($this->taskRulesObj->validateDailyLimit($user));
 	}
         
         /**
@@ -127,9 +132,12 @@ class TaskRulesTest extends TestCase
                     ->will($this->returnValue(40));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $this->taskRulesObj->clearUsers();
-            $this->taskRulesObj->addUser($user);
-            $this->assertTrue($this->taskRulesObj->validateDailyLimit(51, 1));
+            $user->expects($this->once()->method('getSentToday'))
+                    ->will($this->returnValue(51));
+            
+            
+            
+            $this->assertFalse($this->taskRulesObj->validateDailyLimit($user));
         }
         
         /**
@@ -141,9 +149,12 @@ class TaskRulesTest extends TestCase
                     ->will($this->returnValue(false));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $this->taskRulesObj->clearUsers();
-            $this->taskRulesObj->addUser($user);
-            $this->assertFalse($this->taskRulesObj->validateWeeklyLimit(51, 1));
+            $user->expects($this->once()->method('getSentToday'))
+                    ->will($this->returnValue(51));
+            
+            
+            
+            $this->assertFalse($this->taskRulesObj->validateWeeklyLimit($user));
 	}
 	
         /**
@@ -157,9 +168,12 @@ class TaskRulesTest extends TestCase
                     ->will($this->returnValue(60));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $this->taskRulesObj->clearUsers();
-            $this->taskRulesObj->addUser($user);
-            $this->assertTrue($this->taskRulesObj->validateWeeklyLimit(51, 1));
+            $user->expects($this->once()->method('getSentToday'))
+                    ->will($this->returnValue(51));
+            
+            
+            
+            $this->assertFalse($this->taskRulesObj->validateWeeklyLimit($user));
 	}
         
         /**
@@ -173,9 +187,12 @@ class TaskRulesTest extends TestCase
                     ->will($this->returnValue(40));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $this->taskRulesObj->clearUsers();
-            $this->taskRulesObj->addUser($user);
-            $this->assertTrue($this->taskRulesObj->validateWeeklyLimit(51, 1));
+            $user->expects($this->once()->method('getSentToday'))
+                    ->will($this->returnValue(51));
+            
+            
+            
+            $this->assertFalse($this->taskRulesObj->validateWeeklyLimit($user));
         }
         
         /**
@@ -187,9 +204,12 @@ class TaskRulesTest extends TestCase
                     ->will($this->returnValue(false));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $this->taskRulesObj->clearUsers();
-            $this->taskRulesObj->addUser($user);
-            $this->assertFalse($this->taskRulesObj->validateMonthlyLimit(51, 1));
+            $user->expects($this->once()->method('getSentToday'))
+                    ->will($this->returnValue(51));
+            
+            
+            
+            $this->assertFalse($this->taskRulesObj->validateMonthlyLimit($user));
 	}
 	
         /**
@@ -203,9 +223,12 @@ class TaskRulesTest extends TestCase
                     ->will($this->returnValue(60));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $this->taskRulesObj->clearUsers();
-            $this->taskRulesObj->addUser($user);
-            $this->assertTrue($this->taskRulesObj->validateMonthlyLimit(51, 1));
+            $user->expects($this->once()->method('getSentToday'))
+                    ->will($this->returnValue(51));
+            
+            
+            
+            $this->assertFalse($this->taskRulesObj->validateMonthlyLimit($user));
 	}
         
         /**
@@ -219,9 +242,12 @@ class TaskRulesTest extends TestCase
                     ->will($this->returnValue(40));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $this->taskRulesObj->clearUsers();
-            $this->taskRulesObj->addUser($user);
-            $this->assertTrue($this->taskRulesObj->validateMonthlyLimit(51, 1));
+            $user->expects($this->once()->method('getSentToday'))
+                    ->will($this->returnValue(51));
+            
+            
+            
+            $this->assertFalse($this->taskRulesObj->validateMonthlyLimit($user));
         }
         
         /**
@@ -233,9 +259,12 @@ class TaskRulesTest extends TestCase
                     ->will($this->returnValue('guest'));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $this->taskRulesObj->clearUsers();
-            $this->taskRulesObj->addUser($user);
-            $this->assertFalse($this->taskRulesObj->validateUserCreateTask(1));
+            $user->expects($this->once()->method('getSentToday'))
+                    ->will($this->returnValue(51));
+            
+            
+            
+            $this->assertFalse($this->taskRulesObj->validateUserCreateTask($user));
         }
         
         /**
@@ -247,9 +276,12 @@ class TaskRulesTest extends TestCase
                     ->will($this->returnValue('registered'));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $this->taskRulesObj->clearUsers();
-            $this->taskRulesObj->addUser($user);
-            $this->assertTrue($this->taskRulesObj->validateUserCreateTask(1));
+            $user->expects($this->once()->method('getSentToday'))
+                    ->will($this->returnValue(51));
+            
+            
+            
+            $this->assertFalse($this->taskRulesObj->validateUserCreateTask($user));
         }
 
 	/**
@@ -257,8 +289,9 @@ class TaskRulesTest extends TestCase
 	 */
 	public function provideConfigMock()
 	{
-		$configProvider = $this->getMockBuilder('Melete\Business\ConfigurationProvider')
-					->getMock();
+		$configProvider = $this
+                       ->getMockBuilder('Melete\Business\ConfigurationProvider')
+                       ->getMock();
 		$response =  array(
 			//task.name
 			"name" => array (
