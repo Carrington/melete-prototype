@@ -12,24 +12,21 @@ namespace Melete\Rules;
 
 class TaskRules extends AbstractRules
 {
-    
-    public function __construct() {
-        $this->configuration = array();
-    }
+    private $configuration;
     
     public function validateName($name) {
         //validate name length
-        $length = ($name <= $this->getConfig()['name']['length']);
+        $length = ($name <= $this->getConfigValue('name.length'));
         //validate name includes no unpermitted characters
-        $characters = (preg_match($this->getConfig()['name']['characters']));
+        $characters = (preg_match($this->getConfigValue('name.characters')));
         return ($length && $characters);
     }
     
     public function validateInterval($interval) {
         //validate that interval is <= minimum 
-        $min = ($this->getConfig()['interval']['minimum'] <= $interval);
+        $min = ($this->getConfig('interval.minimum') <= $interval);
         //validate that interval is >= maximum
-        $max = ($interval <= $this->getConfig()['interval']['maximum']);
+        $max = ($interval <= $this->getConfigValue('interval.maximum'));
         return ($min && $max);
     }
     
@@ -59,6 +56,7 @@ class TaskRules extends AbstractRules
         return ($user->getSentThisMonth() <= $this
                 ->getConfigValue('user-limits.monthly'));
     }
+    
        
 }
 

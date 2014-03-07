@@ -268,9 +268,9 @@ class TaskRulesTest extends TestCase
         }
         
         /**
-         * @depends testValidateTaskUserLevelNegative
-         * @dataProvider provideUserMock
+         * deprecated - move this functionality to UserRules - ACL.
          */
+        /**
         public function testValidateTaskUserLevelPositive($user) {
             $user->expects($this->once())->method('getUserAccountType')
                     ->will($this->returnValue('registered'));
@@ -282,7 +282,7 @@ class TaskRulesTest extends TestCase
             
             
             $this->assertFalse($this->taskRulesObj->validateUserCreateTask($user));
-        }
+        }**/
 
 	/**
 	 * Mock for Melete\Business\ConfigurationProvider
