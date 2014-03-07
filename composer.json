@@ -1,4 +1,10 @@
 {
+  "autoload": {
+    "psr-4": {
+      "Melete\\" : "src/Melete",
+      "PHPUnit\\" : "vendor/phpunit/phpunit/PHPUnit"
+    }
+  },
   "require-dev": {
     "phpunit/phpunit": "3.7.*"
   }
