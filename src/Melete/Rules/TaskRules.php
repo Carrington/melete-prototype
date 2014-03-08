@@ -14,6 +14,10 @@ class TaskRules extends AbstractRules
 {
     private $configuration;
     
+    public function __construct(Melete\Business\ConfigurationProvider $configProvider) {
+        $this->configuration = $configProvider;
+    }
+    
     public function validateName($name) {
         //validate name length
         $length = ($name <= $this->getConfigValue('name.length'));
@@ -55,6 +59,10 @@ class TaskRules extends AbstractRules
         }
         return ($user->getSentThisMonth() <= $this
                 ->getConfigValue('user-limits.monthly'));
+    }
+    
+    public function getConfigValue($value) {
+        $this->configuration->getConfigValue($value);
     }
     
        

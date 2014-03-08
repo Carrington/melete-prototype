@@ -19,6 +19,7 @@ interface RulesInterface
 {
     public function loadConfig(LoaderInterface $config);
     public function getConfig();
+    public function getConfigValue();
 }
 
 ?>

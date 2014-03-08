@@ -27,6 +27,8 @@ abstract class AbstractRules implements RulesInterface
     public function getConfig() {
         return $this->configuration;
     }
+    
+    abstract public function getConfigValue();
 }
 
 ?>

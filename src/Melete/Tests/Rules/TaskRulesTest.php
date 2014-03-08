@@ -19,8 +19,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testLoadConfig($config) {
 		$this->taskRulesObj->loadConfig($config);
-		$array = $config->getConfigAsMap();
-		$this->assertEquals($this->taskRulesObj->getConfig(), $array);
+		
+		$this->assertSame($this->taskRulesObj->getConfig(), $config);
 	}
 
 	/**
@@ -289,6 +289,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	{
 		$configProvider = $this
                        ->getMockBuilder('Melete\Business\ConfigurationProvider')
+                       ->setMethods(array('getConfigAsMap','loadConfig'))
                        ->getMock();
 		$response =  array(
 			//task.name
@@ -319,6 +320,41 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 			//task.minimum-account
 			"minimum-account" => "registered"
 		);
+                $configProvider->expects($this->any())
+                        ->method('getConfigValue')
+                        ->return($this->returnCallback(function($value) {
+                            switch($value) {
+                                case 'name.length':
+                                    return 100;
+                                    break;
+                                case 'name.characters':
+                                    return '/^[a-zA-Z0-9_- ]+/';
+                                    break;
+                                case 'interval.minimum':
+                                    return 300;
+                                    break;
+                                case 'interval.maximum':
+                                    return 788940000;
+                                    break;
+                                case 'user-limits.daily':
+                                    return 50;
+                                    break;
+                                case 'user-limits.weekly':
+                                    return 300;
+                                    break;
+                                case 'user-limits.monthly':
+                                    return 900;
+                                    break;
+                                case 'user-limits.override':
+                                    return true;
+                                    break;
+                                case 'minimum-account':
+                                    return 'registered';
+                                    break;
+                            }
+                        }));
+                
+                
 
 		$configProvider->expects($this->any())
                                 ->method('getConfigAsMap')
