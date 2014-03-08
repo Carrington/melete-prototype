@@ -20,7 +20,7 @@ abstract class AbstractRules implements RulesInterface
 {
     private $configuration;
     
-    public function loadConfig(Melete\Business\ConfigurationProvider $configProvider) {
+    public function loadConfig(\Melete\Business\ConfigurationProvider $configProvider) {
         $this->configuration = $configProvider;
     }
     
