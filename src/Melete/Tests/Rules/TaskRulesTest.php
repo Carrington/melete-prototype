@@ -15,9 +15,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @dataProvider provideConfigMock
 	 */
-	public function testLoadConfig($config) {
+	public function testLoadConfig() {
+                $config = $this->provideConfigMock();
 		$this->taskRulesObj->loadConfig($config);
 		
 		$this->assertSame($this->taskRulesObj->getConfig(), $config);
@@ -87,9 +87,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @depends testLoadConfig
-         * @dataProvider provideUserMock
 	 */
-	public function testValidateTaskGlobalLimitDailyNegative($user) {
+	public function testValidateTaskGlobalLimitDailyNegative() {
+            $user = $this->provideUserMock();
             $user->expects($this->once())->method('getDailyLimitOverride')
                     ->will($this->returnValue(false));
             $user->expects($this->once())->method('getUserID')
@@ -102,9 +102,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @depends testValidateTaskGlobalLimitDailyNegative
-         * @dataProvider provideUserMock
 	 */
-	public function testValidateTaskUserLimitDailyPositive($user) {
+	public function testValidateTaskUserLimitDailyPositive() {
+            $user = $this->provideUserMock();
             $user->expects($this->once())->method('getDailyLimitOverride')
                     ->will($this->returnValue(true));
             $user->expects($this->once())->method('getDailyLimit')
@@ -121,9 +121,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
         
         /**
          * @depends testValidateTaskUserLimitDailyPositive
-         * @dataProvider provideUserMock
          */
-        public function testValidateTaskUserLimitDailyNegative($user) {
+        public function testValidateTaskUserLimitDailyNegative() {
+            $user = $this->provideUserMock();
             $user->expects($this->once())->method('getDailyLimitOverride')
                     ->will($this->returnValue(true));
             $user->expects($this->once())->method('getDailyLimit')
@@ -140,9 +140,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
         
         /**
 	 * @depends testLoadConfig
-         * @dataProvider provideUserMock
 	 */
-	public function testValidateTaskGlobalLimitWeeklyNegative($user) {
+	public function testValidateTaskGlobalLimitWeeklyNegative() {
+            $user = $this->provideUserMock();
             $user->expects($this->once())->method('getWeeklyLimitOverride')
                     ->will($this->returnValue(false));
             $user->expects($this->once())->method('getUserID')
@@ -157,9 +157,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	
         /**
 	 * @depends testValidateTaskGlobalLimitWeeklyNegative
-         * @dataProvider provideUserMock
 	 */
-	public function testValidateTaskUserLimitWeeklyPositive($user) {
+	public function testValidateTaskUserLimitWeeklyPositive() {
+            $user = $this->provideUserMock();
             $user->expects($this->once())->method('getWeeklyLimitOverride')
                     ->will($this->returnValue(true));
             $user->expects($this->once())->method('getWeeklyLimit')
@@ -176,9 +176,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
         
         /**
          * @depends testValidateTaskUserLimitWeeklyPositive
-         * @dataProvider provideUserMock
          */
-        public function testValidateTaskUserLimitWeeklyNegative($user) {
+        public function testValidateTaskUserLimitWeeklyNegative() {
+            $user = $this->provideUserMock();
             $user->expects($this->once())->method('getWeeklyLimitOverride')
                     ->will($this->returnValue(true));
             $user->expects($this->once())->method('getWeeklyLimit')
@@ -195,9 +195,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
         
         /**
 	 * @depends testLoadConfig
-         * @dataProvider provideUserMock
 	 */
-	public function testValidateTaskGlobalLimitMonthlyNegative($user) {
+	public function testValidateTaskGlobalLimitMonthlyNegative() {
+            $user = $this->provideUserMock();
             $user->expects($this->once())->method('getMonthlyLimitOverride')
                     ->will($this->returnValue(false));
             $user->expects($this->once())->method('getUserID')
@@ -231,9 +231,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
         
         /**
          * @depends testValidateTaskUserLimitMonthlyPositive
-         * @dataProvider provideUserMock
          */
-        public function testValidateTaskUserLimitMonthlyNegative($user) {
+        public function testValidateTaskUserLimitMonthlyNegative() {
+            $user = $this->provideUserMock();
             $user->expects($this->once())->method('getMonthlyLimitOverride')
                     ->will($this->returnValue(true));
             $user->expects($this->once())->method('getMonthlyLimit')
@@ -250,9 +250,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
         
         /**
          * @depends testLoadConfig
-         * @dataProvider provideUserMock
          */
-        public function testValidateTaskUserLevelNegative($user) {
+        public function testValidateTaskUserLevelNegative() {
+            $user = $this->provideUserMock();
             $user->expects($this->once())->method('getUserAccountType')
                     ->will($this->returnValue('guest'));
             $user->expects($this->once())->method('getUserID')
