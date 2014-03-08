@@ -20,8 +20,8 @@ abstract class AbstractRules implements RulesInterface
 {
     private $configuration;
     
-    public function loadConfig(\Melete\Business\Helpers\LoaderInterface $config) {
-        $this->configuration = $config::getConfigAsMap();
+    public function loadConfig(Melete\Business\ConfigurationProvider $configProvider) {
+        $this->configuration = $configProvider;
     }
     
     public function getConfig() {

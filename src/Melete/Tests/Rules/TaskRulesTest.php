@@ -370,7 +370,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function provideUserMock() {
 		$user = $this->getMockBuilder('Melete\Business\User')
-	                ->setConstructorArgs()
+	                ->disableOriginalConstructor()
         	        ->getMock();
 		return $user;
 	}

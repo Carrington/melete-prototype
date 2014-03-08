@@ -12,10 +12,8 @@ namespace Melete\Rules;
 
 class TaskRules extends AbstractRules
 {
-    private $configuration;
     
-    public function __construct(Melete\Business\ConfigurationProvider $configProvider) {
-        $this->configuration = $configProvider;
+    public function __construct() {
     }
     
     public function validateName($name) {
