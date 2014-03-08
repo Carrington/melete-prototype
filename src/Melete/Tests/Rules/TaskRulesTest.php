@@ -324,7 +324,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 		);
                 $configProvider->expects($this->any())
                         ->method('getConfigValue')
-                        ->return($this->returnCallback(function($value) {
+                        ->will($this->returnCallback(function($value) {
                             switch($value) {
                                 case 'name.length':
                                     return 100;
