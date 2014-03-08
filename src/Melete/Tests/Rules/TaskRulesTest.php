@@ -212,9 +212,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	
         /**
 	 * @depends testValidateTaskGlobalLimitMonthlyNegative
-         * @dataProvider provideUserMock
 	 */
-	public function testValidateTaskUserLimitMonthlyPositive($user) {
+	public function testValidateTaskUserLimitMonthlyPositive() {
+            $user = $this->provideUserMock();
             $user->expects($this->once())->method('getMonthlyLimitOverride')
                     ->will($this->returnValue(true));
             $user->expects($this->once())->method('getMonthlyLimit')
