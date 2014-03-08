@@ -94,7 +94,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(false));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $user->expects($this->once()->method('getSentToday'))
+            $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
             $this->assertFalse($this->taskRulesObj->validateDailyLimit($user));
@@ -111,11 +111,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(60));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $user->expects($this->once()->method('getSentToday'))
+            $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
-            
-            $arrayExpected = array(1 => true);
             $this->assertFalse($this->taskRulesObj->validateDailyLimit($user));
 	}
         
@@ -130,7 +128,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(40));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $user->expects($this->once()->method('getSentToday'))
+            $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
             
@@ -147,7 +145,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(false));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $user->expects($this->once()->method('getSentToday'))
+            $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
             
@@ -166,7 +164,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(60));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $user->expects($this->once()->method('getSentToday'))
+            $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
             
@@ -185,7 +183,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(40));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $user->expects($this->once()->method('getSentToday'))
+            $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
             
@@ -202,7 +200,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(false));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $user->expects($this->once()->method('getSentToday'))
+            $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
             
@@ -221,7 +219,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(60));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $user->expects($this->once()->method('getSentToday'))
+            $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
             
@@ -240,7 +238,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(40));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $user->expects($this->once()->method('getSentToday'))
+            $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
             
@@ -257,7 +255,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue('guest'));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $user->expects($this->once()->method('getSentToday'))
+            $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
             
@@ -274,8 +272,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue('registered'));
             $user->expects($this->once())->method('getUserID')
                     ->will($this->returnValue(1));
-            $user->expects($this->once()->method('getSentToday'))
-                    ->will($this->returnValue(51));
+            $user->expects($this->once())->method('getSentToday'))
+                    ->will($this->returnValue(51);
             
             
             
