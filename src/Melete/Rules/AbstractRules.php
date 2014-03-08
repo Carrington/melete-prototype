@@ -14,13 +14,11 @@
 
 namespace Melete\Rules;
 
-use Melete\Rules\RulesInterface;
-
-abstract class AbstractRules implements RulesInterface
+abstract class AbstractRules
 {
     private $configuration;
     
-    public function loadConfig(Melete\Business\ConfigurationProvider $configProvider) {
+    public function loadConfig(\Melete\Business\ConfigurationProvider $configProvider) {
         $this->configuration = $configProvider;
     }
     
@@ -28,7 +26,7 @@ abstract class AbstractRules implements RulesInterface
         return $this->configuration;
     }
     
-    abstract public function getConfigValue();
+    abstract public function getConfigValue($value);
 }
 
 ?>

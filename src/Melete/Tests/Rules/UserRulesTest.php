@@ -3,14 +3,13 @@
 namespace Melete\Tests\Rules;
 
 use Melete\Rules\Rules as Rules;
-use PHPUnit\Framework\TestCase as TestCase;
 
 /**
  * Description of UserRulesTest
  *
  * @author Daniel Ingraham
  */
-class UserRulesTest extends TestCase
+class UserRulesTest extends \PHPUnit_Framework_TestCase
 {
     
 }
