@@ -316,7 +316,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 		$configProvider = $this
                        ->getMockBuilder('Melete\Business\ConfigurationProvider')
                        ->disableOriginalConstructor()
-                       ->setMethods(array('getConfigAsMap','loadConfig'))
+                       ->setMethods(array('getConfigAsMap','loadConfig','getConfigValue'))
                        ->getMock();
 		$response =  array(
 			//task.name
