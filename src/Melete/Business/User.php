@@ -9,7 +9,9 @@ namespace Melete\Business;
 
 class User
 {
-    
+    public function getDailyLimitOverride() {
+        
+    }
 }
 
 ?>
