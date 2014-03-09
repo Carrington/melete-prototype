@@ -32,7 +32,7 @@ class TaskRules extends AbstractRules
         return ($min && $max);
     }
     
-    public function validateDailyLimit($user) {
+    public function validateDailyLimit(\Melete\Business\User $user) {
         if ($user->getDailyLimitOverride() && 
             $this->getConfigValue('user-limits.override')) {
             return ($user->getSentToday() <= $user->getDailyLimit());
@@ -41,7 +41,7 @@ class TaskRules extends AbstractRules
                 ->getConfigValue('user-limits.daily'));
     }
     
-    public function validateWeeklyLimit($user) {
+    public function validateWeeklyLimit(\Melete\Business\User $user) {
         if ($user->getWeeklyLimitOverride() &&
                 $this->getConfigValue('user-limits.override')) {
             return ($user->getSentThisWeek() <= $user->getWeeklyLimit());
@@ -50,7 +50,7 @@ class TaskRules extends AbstractRules
                 ->getConfigValue('user-limits.weekly'));
     }
     
-    public function validateMonthlyLimit($user) {
+    public function validateMonthlyLimit(\Melete\Business\User $user) {
         if ($user->getMonthlyLimitOverride() &&
                 $this->getConfigValue('user-limits.override')) {
             return ($user->getSentThisMonth() <= $user->getMonthlyLimit());
