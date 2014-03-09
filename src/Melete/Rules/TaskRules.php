@@ -60,7 +60,7 @@ class TaskRules extends AbstractRules
     }
     
     public function getConfigValue($value) {
-        $this->configuration->getConfigValue($value);
+        $this->getConfig()->getConfigValue($value);
     }
     
     public function validateUserCreateTask(\Melete\Business\User $user) {
