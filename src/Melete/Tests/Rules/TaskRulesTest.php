@@ -29,7 +29,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	public function testValidateTaskNameLengthNegative() {
                 $config = $this->provideConfigMock();
 		$this->taskRulesObj->loadConfig($config);
-		$this->assertFalse($this->taskRulesObj->validateName("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
+		$this->assertFalse($this->taskRulesObj->validateName("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
 	}
 
 	/**
@@ -109,7 +109,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
             $user = $this->provideUserMock();
             $user->expects($this->once())->method('getDailyLimitOverride')
                     ->will($this->returnValue(false));
-            $user->expects($this->one())->method('getSentToday')
+            $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             $config = $this->provideConfigMock();
 	    $this->taskRulesObj->loadConfig($config);
@@ -353,7 +353,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                                     return 100;
                                     break;
                                 case 'name.characters':
-                                    return '/^[a-zA-Z0-9_- ]+/';
+                                    return '/^[a-zA-Z0-9-_ ]+/';
                                     break;
                                 case 'interval.minimum':
                                     return 300;

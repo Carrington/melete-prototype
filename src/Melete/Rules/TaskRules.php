@@ -18,7 +18,7 @@ class TaskRules extends AbstractRules
     
     public function validateName($name) {
         //validate name length
-        $length = ($name <= $this->getConfigValue('name.length'));
+        $length = (strlen($name) <= $this->getConfigValue('name.length'));
         //validate name includes no unpermitted characters
         $characters = (preg_match($this->getConfigValue('name.characters'), $name));
         return ($length && $characters);
@@ -26,7 +26,7 @@ class TaskRules extends AbstractRules
     
     public function validateInterval($interval) {
         //validate that interval is <= minimum 
-        $min = ($this->getConfig('interval.minimum') <= $interval);
+        $min = ($this->getConfigValue('interval.minimum') <= $interval);
         //validate that interval is >= maximum
         $max = ($interval <= $this->getConfigValue('interval.maximum'));
         return ($min && $max);
