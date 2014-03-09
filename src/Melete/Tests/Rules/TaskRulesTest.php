@@ -27,6 +27,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	 * @depends testLoadConfig
 	 */
 	public function testValidateTaskNameLengthNegative() {
+                $config = $this->provideConfigMock();
+		$this->taskRulesObj->loadConfig($config);
 		$this->assertFalse($this->taskRulesObj->validateName("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
 	}
 
@@ -34,6 +36,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	 * @depends testValidateTaskNameLengthNegative
 	 */
 	public function testValidateTaskNameLengthPositive() {
+                $config = $this->provideConfigMock();
+		$this->taskRulesObj->loadConfig($config);
 		$this->assertTrue($this->taskRulesObj
                         ->validateName("AAAAAAAAAA"));
 	}
@@ -42,6 +46,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	 * @depends testLoadConfig
 	 */
 	public function testValidateTaskNameCharactersNegative() {
+                $config = $this->provideConfigMock();
+		$this->taskRulesObj->loadConfig($config);
 		$this->assertFalse($this->taskRulesObj
                         ->validateName("Th!sisaname"));
 	}
@@ -51,7 +57,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	 * @depends testValidateTaskNameCharactersNegative
 	 */
 	public function testValidateTaskNameCharactersPositive() {
-		$this->assertTrue($this->taskRulesObj
+		$config = $this->provideConfigMock();
+		$this->taskRulesObj->loadConfig($config);
+                $this->assertTrue($this->taskRulesObj
                         ->validateName("Thisisaname"));
 	}
 	
@@ -59,14 +67,18 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	 * @depends testLoadConfig
 	 */
 	public function testValidateTaskMinimumIntervalNegative() {
-		$this->assertFalse($this->taskRulesObj->validateInterval(299));
+                $config = $this->provideConfigMock();
+		$this->taskRulesObj->loadConfig($config);
+                $this->assertFalse($this->taskRulesObj->validateInterval(299));
 	}
 
 	/**
 	 * @depends testValidateTaskMinimumIntervalNegative
 	 */
 	public function testValidateTaskMinimumIntervalPositive() {
-		$this->assertTrue($this->taskRulesObj
+                $config = $this->provideConfigMock();
+		$this->taskRulesObj->loadConfig($config);
+                $this->assertTrue($this->taskRulesObj
                         ->validateInterval(300));
         }
 	
@@ -74,7 +86,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	 * @depends testLoadConfig
 	 */
 	public function testValidateTaskMaximumIntervalNegative() {
-		$this->assertFalse($this->taskRulesObj
+                $config = $this->provideConfigMock();
+		$this->taskRulesObj->loadConfig($config);
+                $this->assertFalse($this->taskRulesObj
                         ->validateInterval(788940001));
 	}
 
@@ -82,7 +96,10 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 	 * @depends testValidateTaskMaximumIntervalNegative
 	 */
 	public function testValidateTaskMaximumIntervalPositive() {
-		$this->assertTrue(788940000);
+		$config = $this->provideConfigMock();
+		$this->taskRulesObj->loadConfig($config);
+                $this->assertTrue($this->taskRulesObj
+                        ->validateInterval(788940000));
 	}
 
 	/**
@@ -96,7 +113,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(1));
             $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
-            
+            $config = $this->provideConfigMock();
+	    $this->taskRulesObj->loadConfig($config);
             $this->assertFalse($this->taskRulesObj->validateDailyLimit($user));
 	}
 
@@ -113,7 +131,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(1));
             $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
-            
+            $config = $this->provideConfigMock();
+            $this->taskRulesObj->loadConfig($config);
             $this->assertFalse($this->taskRulesObj->validateDailyLimit($user));
 	}
         
@@ -131,7 +150,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
             $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
-            
+                $config = $this->provideConfigMock();
+		$this->taskRulesObj->loadConfig($config);            
             
             $this->assertFalse($this->taskRulesObj->validateDailyLimit($user));
         }
@@ -148,7 +168,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
             $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
-            
+            $config = $this->provideConfigMock();
+	    $this->taskRulesObj->loadConfig($config);           
             
             $this->assertFalse($this->taskRulesObj->validateWeeklyLimit($user));
 	}
@@ -166,7 +187,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(1));
             $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
-            
+            $config = $this->provideConfigMock();
+	    $this->taskRulesObj->loadConfig($config);                  
             
             
             $this->assertFalse($this->taskRulesObj->validateWeeklyLimit($user));
@@ -185,7 +207,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(1));
             $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
-            
+            $config = $this->provideConfigMock();
+	    $this->taskRulesObj->loadConfig($config);                  
             
             
             $this->assertFalse($this->taskRulesObj->validateWeeklyLimit($user));
@@ -202,7 +225,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(1));
             $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
-            
+            $config = $this->provideConfigMock();
+	    $this->taskRulesObj->loadConfig($config);                  
             
             
             $this->assertFalse($this->taskRulesObj->validateMonthlyLimit($user));
@@ -221,7 +245,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(1));
             $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
-            
+            $config = $this->provideConfigMock();
+	    $this->taskRulesObj->loadConfig($config);                  
             
             
             $this->assertFalse($this->taskRulesObj->validateMonthlyLimit($user));
@@ -240,7 +265,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(1));
             $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
-            
+            $config = $this->provideConfigMock();
+	    $this->taskRulesObj->loadConfig($config);                  
             
             
             $this->assertFalse($this->taskRulesObj->validateMonthlyLimit($user));
