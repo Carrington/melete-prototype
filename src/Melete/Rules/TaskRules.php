@@ -20,7 +20,7 @@ class TaskRules extends AbstractRules
         //validate name length
         $length = ($name <= $this->getConfigValue('name.length'));
         //validate name includes no unpermitted characters
-        $characters = (preg_match($this->getConfigValue('name.characters')));
+        $characters = (preg_match($this->getConfigValue('name.characters'), $name));
         return ($length && $characters);
     }
     
