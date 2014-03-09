@@ -63,6 +63,10 @@ class TaskRules extends AbstractRules
         $this->configuration->getConfigValue($value);
     }
     
+    public function validateUserCreateTask(\Melete\Business\User $user) {
+        
+    }
+    
        
 }
 

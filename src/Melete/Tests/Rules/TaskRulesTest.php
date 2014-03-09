@@ -247,8 +247,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
         }
         
         /**
-         * @depends testLoadConfig
+         * deprecated - move this functionality to UserRules - ACL.
          */
+        /**
         public function testValidateTaskUserLevelNegative() {
             $user = $this->provideUserMock();
             $user->expects($this->once())->method('getUserAccountType')
@@ -267,7 +268,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
          * deprecated - move this functionality to UserRules - ACL.
          */
         /**
-        public function testValidateTaskUserLevelPositive($user) {
+         public function testValidateTaskUserLevelPositive($user) {
             $user->expects($this->once())->method('getUserAccountType')
                     ->will($this->returnValue('registered'));
             $user->expects($this->once())->method('getUserID')
