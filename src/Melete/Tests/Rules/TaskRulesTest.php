@@ -109,9 +109,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
             $user = $this->provideUserMock();
             $user->expects($this->once())->method('getDailyLimitOverride')
                     ->will($this->returnValue(false));
-            $user->expects($this->once())->method('getUserID')
-                    ->will($this->returnValue(1));
-            $user->expects($this->once())->method('getSentToday')
+            $user->expects($this->one())->method('getSentToday')
                     ->will($this->returnValue(51));
             $config = $this->provideConfigMock();
 	    $this->taskRulesObj->loadConfig($config);
