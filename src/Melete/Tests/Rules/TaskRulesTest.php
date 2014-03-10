@@ -39,7 +39,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                 $config = $this->provideConfigMock();
 		$this->taskRulesObj->loadConfig($config);
 		$this->assertTrue($this->taskRulesObj
-                        ->validateName("AAAAAAAAAA"));
+                        ->validateName("AAAAAAAAAAA"));
 	}
 
 	/**
@@ -109,7 +109,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
             $user = $this->provideUserMock();
             $user->expects($this->once())->method('getDailyLimitOverride')
                     ->will($this->returnValue(false));
-            $user->expects($this->once())->method('getSentToday')
+            $user->expects($this->exactly(2))->method('getSentToday')
                     ->will($this->returnValue(51));
             $config = $this->provideConfigMock();
 	    $this->taskRulesObj->loadConfig($config);
@@ -125,13 +125,11 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(true));
             $user->expects($this->once())->method('getDailyLimit')
                     ->will($this->returnValue(60));
-            $user->expects($this->once())->method('getUserID')
-                    ->will($this->returnValue(1));
-            $user->expects($this->once())->method('getSentToday')
+            $user->expects($this->exactly(2))->method('getSentToday')
                     ->will($this->returnValue(51));
             $config = $this->provideConfigMock();
             $this->taskRulesObj->loadConfig($config);
-            $this->assertFalse($this->taskRulesObj->validateDailyLimit($user));
+            $this->assertTrue($this->taskRulesObj->validateDailyLimit($user));
 	}
         
         /**
@@ -143,9 +141,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(true));
             $user->expects($this->once())->method('getDailyLimit')
                     ->will($this->returnValue(40));
-            $user->expects($this->once())->method('getUserID')
-                    ->will($this->returnValue(1));
-            $user->expects($this->once())->method('getSentToday')
+            $user->expects($this->exactly(2))->method('getSentToday')
                     ->will($this->returnValue(51));
             
                 $config = $this->provideConfigMock();
@@ -161,10 +157,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
             $user = $this->provideUserMock();
             $user->expects($this->once())->method('getWeeklyLimitOverride')
                     ->will($this->returnValue(false));
-            $user->expects($this->once())->method('getUserID')
-                    ->will($this->returnValue(1));
-            $user->expects($this->once())->method('getSentToday')
-                    ->will($this->returnValue(51));
+            $user->expects($this->exactly(2))->method('getSentThisWeek')
+                    ->will($this->returnValue(301));
             
             $config = $this->provideConfigMock();
 	    $this->taskRulesObj->loadConfig($config);           
@@ -181,15 +175,13 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(true));
             $user->expects($this->once())->method('getWeeklyLimit')
                     ->will($this->returnValue(60));
-            $user->expects($this->once())->method('getUserID')
-                    ->will($this->returnValue(1));
-            $user->expects($this->once())->method('getSentToday')
+            $user->expects($this->exactly(2))->method('getSentThisWeek')
                     ->will($this->returnValue(51));
             $config = $this->provideConfigMock();
 	    $this->taskRulesObj->loadConfig($config);                  
             
             
-            $this->assertFalse($this->taskRulesObj->validateWeeklyLimit($user));
+            $this->assertTrue($this->taskRulesObj->validateWeeklyLimit($user));
 	}
         
         /**
@@ -201,9 +193,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue(true));
             $user->expects($this->once())->method('getWeeklyLimit')
                     ->will($this->returnValue(40));
-            $user->expects($this->once())->method('getUserID')
-                    ->will($this->returnValue(1));
-            $user->expects($this->once())->method('getSentToday')
+            $user->expects($this->exactly(2))->method('getSentThisWeek')
                     ->will($this->returnValue(51));
             $config = $this->provideConfigMock();
 	    $this->taskRulesObj->loadConfig($config);                  
@@ -219,10 +209,8 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
             $user = $this->provideUserMock();
             $user->expects($this->once())->method('getMonthlyLimitOverride')
                     ->will($this->returnValue(false));
-            $user->expects($this->once())->method('getUserID')
-                    ->will($this->returnValue(1));
-            $user->expects($this->once())->method('getSentToday')
-                    ->will($this->returnValue(51));
+            $user->expects($this->exactly(2))->method('getSentThisMonth')
+                    ->will($this->returnValue(9000));
             $config = $this->provideConfigMock();
 	    $this->taskRulesObj->loadConfig($config);                  
             
@@ -238,16 +226,14 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
             $user->expects($this->once())->method('getMonthlyLimitOverride')
                     ->will($this->returnValue(true));
             $user->expects($this->once())->method('getMonthlyLimit')
-                    ->will($this->returnValue(60));
-            $user->expects($this->once())->method('getUserID')
-                    ->will($this->returnValue(1));
-            $user->expects($this->once())->method('getSentToday')
-                    ->will($this->returnValue(51));
+                    ->will($this->returnValue(6000));
+            $user->expects($this->exactly(2))->method('getSentThisMonth')
+                    ->will($this->returnValue(5999));
             $config = $this->provideConfigMock();
 	    $this->taskRulesObj->loadConfig($config);                  
             
             
-            $this->assertFalse($this->taskRulesObj->validateMonthlyLimit($user));
+            $this->assertTrue($this->taskRulesObj->validateMonthlyLimit($user));
 	}
         
         /**
@@ -258,11 +244,9 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
             $user->expects($this->once())->method('getMonthlyLimitOverride')
                     ->will($this->returnValue(true));
             $user->expects($this->once())->method('getMonthlyLimit')
-                    ->will($this->returnValue(40));
-            $user->expects($this->once())->method('getUserID')
-                    ->will($this->returnValue(1));
-            $user->expects($this->once())->method('getSentToday')
-                    ->will($this->returnValue(51));
+                    ->will($this->returnValue(4000));
+            $user->expects($this->exactly(2))->method('getSentThisMonth')
+                    ->will($this->returnValue(5100));
             $config = $this->provideConfigMock();
 	    $this->taskRulesObj->loadConfig($config);                  
             
@@ -278,8 +262,6 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
             $user = $this->provideUserMock();
             $user->expects($this->once())->method('getUserAccountType')
                     ->will($this->returnValue('guest'));
-            $user->expects($this->once())->method('getUserID')
-                    ->will($this->returnValue(1));
             $user->expects($this->once())->method('getSentToday')
                     ->will($this->returnValue(51));
             
@@ -295,8 +277,6 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
          public function testValidateTaskUserLevelPositive($user) {
             $user->expects($this->once())->method('getUserAccountType')
                     ->will($this->returnValue('registered'));
-            $user->expects($this->once())->method('getUserID')
-                    ->will($this->returnValue(1));
             $user->expects($this->once())->method('getSentToday'))
                     ->will($this->returnValue(51);
             
@@ -322,7 +302,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
 				//task.name.length
 				"length" => 100,
 				//task.name.characters
-				"characters" => "/^[a-zA-Z0-9_- ]+/"
+				"characters" => "/[^a-zA-Z0-9_ \-]/s"
 			),
 			//task.interval
 			"interval" => array (
@@ -353,7 +333,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                                     return 100;
                                     break;
                                 case 'name.characters':
-                                    return '/^[a-zA-Z0-9-_ ]+/';
+                                    return '/[^a-zA-Z0-9_ \-]/s';
                                     break;
                                 case 'interval.minimum':
                                     return 300;

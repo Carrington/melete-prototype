@@ -21,7 +21,7 @@ class TaskRules extends AbstractRules
         $length = (strlen($name) <= $this->getConfigValue('name.length'));
         //validate name includes no unpermitted characters
         $characters = (preg_match($this->getConfigValue('name.characters'), $name));
-        return ($length && $characters);
+        return ($length && !$characters);
     }
     
     public function validateInterval($interval) {
@@ -33,15 +33,25 @@ class TaskRules extends AbstractRules
     }
     
     public function validateDailyLimit(\Melete\Business\User $user) {
+	if (is_null($user->getSentToday())) {
+		throw new \Melete\Exceptions\NullDataException("User's sent reminders were not set.");
+	}
+	//does the user have the right to override the global daily limit and
+	//if so do they have limit remaining?
         if ($user->getDailyLimitOverride() && 
             $this->getConfigValue('user-limits.override')) {
             return ($user->getSentToday() <= $user->getDailyLimit());
         }
+	//does the user have limit remaining (against the global limit)?
         return ($user->getSentToday() <= $this
                 ->getConfigValue('user-limits.daily'));
     }
     
     public function validateWeeklyLimit(\Melete\Business\User $user) {
+        if (is_null($user->getSentThisWeek())) {
+                throw new \Melete\Exceptions\NullDataException("User's sent reminders were not set.");
+        }
+
         if ($user->getWeeklyLimitOverride() &&
                 $this->getConfigValue('user-limits.override')) {
             return ($user->getSentThisWeek() <= $user->getWeeklyLimit());
@@ -51,6 +61,10 @@ class TaskRules extends AbstractRules
     }
     
     public function validateMonthlyLimit(\Melete\Business\User $user) {
+        if (is_null($user->getSentThisMonth())) {
+                throw new \Melete\Exceptions\NullDataException("User's sent reminders were not set.");
+        }
+
         if ($user->getMonthlyLimitOverride() &&
                 $this->getConfigValue('user-limits.override')) {
             return ($user->getSentThisMonth() <= $user->getMonthlyLimit());
