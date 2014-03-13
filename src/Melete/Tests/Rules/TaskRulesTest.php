@@ -20,7 +20,7 @@ class TaskRulesTest extends \PHPUnit_Framework_TestCase
                 $config = $this->provideConfigMock();
 		$this->taskRulesObj->loadConfig($config);
 		
-		$this->assertSame($this->taskRulesObj->getConfig(), $config);
+		$this->assertSame($this->taskRulesObj->loadConfig(), $config);
 	}
 
 	/**

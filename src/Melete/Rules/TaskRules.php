@@ -74,7 +74,7 @@ class TaskRules extends AbstractRules
     }
     
     public function getConfigValue($value) {
-        $config = $this->getConfig();
+        $config = $this->loadConfig();
         return $config->getConfigValue($value);
     }
     

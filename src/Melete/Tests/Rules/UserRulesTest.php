@@ -11,7 +11,9 @@ use Melete\Rules\Rules as Rules;
  */
 class UserRulesTest extends \PHPUnit_Framework_TestCase
 {
-    
+    public function testStubg() {
+        $this->assertTrue(true);
+    }
 }
 
 ?>

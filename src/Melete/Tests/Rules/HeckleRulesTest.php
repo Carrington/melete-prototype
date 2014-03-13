@@ -11,7 +11,9 @@ use Melete\Rules\HeckleRules as Rules;
  */
 class HeckleRulesTest extends \PHPUnit_Framework_TestCase
 {
-    //put your code here
+    public function testStubg() {
+        $this->assertTrue(true);
+    }
 }
 
 ?>
