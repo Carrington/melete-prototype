@@ -21,17 +21,17 @@ class JSONLoaderTest extends \PHPUnit_Framework_TestCase
     /**
      * Should load the config file, then assertSame against an identical object
      */
-    public function testloadConfig() {
+    public function testLoadConfig() {
         $testConfig = $this->loader->loadConfig();
         $assertArray = array(
             "testValue" => true
         );
-        $assertConfig = json_encode($assertArray);
-        $this->assertSame($assertConfig, $testConfig);
+	var_dump($testConfig);
+        $this->assertEquals($assertArray, $testConfig);
     }
     
     /**
-     * @depends testGetConfig
+     * @depends testLoadConfig
      */
     public function testWriteConfigValue() {
         $key = "monkey";
@@ -45,7 +45,7 @@ class JSONLoaderTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * @depends testGetConfig
+     * @depends testLoadConfig
      */
     public function testUnloadConfig() {
         $this->loader->unloadConfig();

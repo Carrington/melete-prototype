@@ -2,16 +2,18 @@
 
 namespace Melete\Business\Helpers;
 
+use Melete\Business\Helpers\Loader\LoaderInterface as LoaderInterface;
+
 /**
  * Description of YmlLoader
  *
  * @author Dan
  */
-class JSONLoader implements Melete\Business\Helpers\LoaderInterface
+class JSONLoader extends AbstractConfigLoader implements LoaderInterface
 {
-    private $configFileName;
-    private $fileHandle;
+
     private $json;
+
     
     //TODO: Consider abstract ancestor
     public function __construct($file, $wrapper=null, $context=null, $filter=null) {
@@ -19,19 +21,31 @@ class JSONLoader implements Melete\Business\Helpers\LoaderInterface
     }
     
     public function loadConfig() {
-        $this->json = fpassthru($this->fileHandle);
-        return json_decode($this->json);
+        $this->json = fread($this->getFileHandle(), filesize($this->getConfigFileName()));
+        $jsonObj = json_decode($this->json);
+
+        if (! is_object($jsonObj)) {
+                throw new \Exception("JSON did not decode to stdClass properly");
+        }
+
+	return $this->jsonObjectToArray($jsonObj);	
+    }
+
+    private function jsonObjectToArray($jsonObj) {
+        $objVars = get_object_vars($jsonObj);
+	return $objVars;
+
     }
 
 
     public function unloadConfig() {
         $this->json = "";
-        fclose($this->configFileName);
+        fclose($this->getFileHandle());
     }
     
     public function writeConfig($key, $value) {
        $workingConfig = $this->loadConfig();
-       
+       var_dump($workingConfig);
        $searchFlag = $this->searchForConfigKey($key, $workingConfig);
        if (! $searchFlag) {
            $workingConfig[$key] = $value;
@@ -41,8 +55,8 @@ class JSONLoader implements Melete\Business\Helpers\LoaderInterface
            }
            $keys = explode(' . ', $searchFlag);
            $workingConfig = $this->editConfigValueRecursive($workingConfig, $keys, $value);
-           ftruncate($this->fileHandle, 0);
-           fwrite($this->fileHandle, json_encode($workingConfig));
+           ftruncate($this->getFileHandle(), 0);
+           fwrite($this->getFileHandle(), json_encode($workingConfig));
            return true;
        }  
     }

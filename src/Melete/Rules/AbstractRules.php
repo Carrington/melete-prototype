@@ -22,10 +22,10 @@ abstract class AbstractRules
         $this->configuration = $configProvider;
     }
     
-    public function loadConfig() {
-        return $this->configuration;
+    public function getConfig() {
+	return $this->configuration;
     }
-    
+
     abstract public function getConfigValue($value);
 }
 
