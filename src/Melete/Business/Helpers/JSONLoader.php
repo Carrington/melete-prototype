@@ -13,22 +13,28 @@ class JSONLoader extends AbstractConfigLoader implements LoaderInterface
 {
 
     private $json;
-
+    private $jsonObj;
     
-    //TODO: Consider abstract ancestor
     public function __construct($file, $wrapper=null, $context=null, $filter=null) {
         parent::__construct($file, $wrapper, $context, $filter);
     }
     
     public function loadConfig() {
-        $this->json = fread($this->getFileHandle(), filesize($this->getConfigFileName()));
-        $jsonObj = json_decode($this->json);
+	if ($this->json == "" || is_null($this->json)) {
+		if (! rewind($this->getFileHandle())) {
+			throw new \Exception("Could not rewind file pointer");
+		}
+		clearstatcache();
+		$this->json = fread($this->getFileHandle(), filesize($this->getConfigFileName()));
+		$this->jsonObj = json_decode($this->json);
+	
+	}
 
-        if (! is_object($jsonObj)) {
+        if (! is_object($this->jsonObj)) {
                 throw new \Exception("JSON did not decode to stdClass properly");
         }
 
-	return $this->jsonObjectToArray($jsonObj);	
+	return $this->jsonObjectToArray($this->jsonObj);	
     }
 
     private function jsonObjectToArray($jsonObj) {
@@ -36,16 +42,21 @@ class JSONLoader extends AbstractConfigLoader implements LoaderInterface
 	return $objVars;
 
     }
+ 
+    private function flagRefreshConfig() {
+	$this->json = "";
+	$this->jsonObj = null;
+    }
 
 
     public function unloadConfig() {
         $this->json = "";
+	rewind($this->getFileHandle());
         fclose($this->getFileHandle());
     }
     
     public function writeConfig($key, $value) {
        $workingConfig = $this->loadConfig();
-       var_dump($workingConfig);
        $searchFlag = $this->searchForConfigKey($key, $workingConfig);
        if (! $searchFlag) {
            $workingConfig[$key] = $value;
@@ -55,10 +66,12 @@ class JSONLoader extends AbstractConfigLoader implements LoaderInterface
            }
            $keys = explode(' . ', $searchFlag);
            $workingConfig = $this->editConfigValueRecursive($workingConfig, $keys, $value);
-           ftruncate($this->getFileHandle(), 0);
-           fwrite($this->getFileHandle(), json_encode($workingConfig));
-           return true;
-       }  
+	}
+        ftruncate($this->getFileHandle(), 0);
+	rewind($this->getFileHandle());
+        fwrite($this->getFileHandle(), json_encode($workingConfig));
+	$this->flagRefreshConfig();
+        return true;
     }
     
     private function editConfigValueRecursive($config, $keys, $value) {

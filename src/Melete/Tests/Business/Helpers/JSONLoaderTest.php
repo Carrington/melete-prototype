@@ -11,22 +11,27 @@ use Melete\Business\Helpers\JSONLoader as Loader;
  */
 class JSONLoaderTest extends \PHPUnit_Framework_TestCase
 {
-    private $loader;
     
     public function setUp() {
         parent::setUp();
-        $this->loader = new Loader("/var/www/html/melete-prototype/config/config.json");
+	$handle = fopen("/var/www/html/melete-prototype/config/config.json", "w");
+	ftruncate($handle, 0);
+	$string = json_encode(array("testValue" => true));
+	fwrite($handle, $string);
+	fclose($handle);
     }
     
     /**
      * Should load the config file, then assertSame against an identical object
      */
     public function testLoadConfig() {
-        $testConfig = $this->loader->loadConfig();
+
+	$loader = new Loader("/var/www/html/melete-prototype/config/config.json");
+
+        $testConfig = $loader->loadConfig();
         $assertArray = array(
             "testValue" => true
         );
-	var_dump($testConfig);
         $this->assertEquals($assertArray, $testConfig);
     }
     
@@ -34,22 +39,29 @@ class JSONLoaderTest extends \PHPUnit_Framework_TestCase
      * @depends testLoadConfig
      */
     public function testWriteConfigValue() {
+
+        $loader = new Loader("/var/www/html/melete-prototype/config/config.json");
+
+	$loader->loadConfig();
         $key = "monkey";
         $value = "butt";
         $assertArray = array(
             "testValue" => true,
             $key => $value
         );
-        $this->loader->writeConfig($key, $value);
-        $this->assertEquals($assertArray, $this->loader->loadConfig());
+        $loader->writeConfig($key, $value);
+	$testConfig = $loader->loadConfig();
+        $this->assertEquals($assertArray, $testConfig);
     }
     
     /**
      * @depends testLoadConfig
      */
     public function testUnloadConfig() {
-        $this->loader->unloadConfig();
-        $this->assertFalse($this->loader->loadConfig());
+	$loader = new Loader("/var/www/html/melete-prototype/config/config.json");
+	$loader->loadConfig();
+        $loader->unloadConfig();
+        $this->assertFalse($loader->loadConfig());
     }
     
     

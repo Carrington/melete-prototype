@@ -10,8 +10,8 @@ namespace Melete\Business\Helpers;
 class AbstractConfigLoader
 {
 
-    private $configFileName;
-    private $fileHandle;
+    protected $configFileName;
+    protected $fileHandle;
 
 
     public function __construct($file, $wrapper=null, $context=null, $filter=null) {
@@ -35,7 +35,6 @@ class AbstractConfigLoader
             throw new \Melete\Exceptions\ConfigException("Specified config file does not exist!");
         } 
         $this->fileHandle = fopen($wrapperString . $file, "r+");
-        
         if (! is_null($filter)) {
             stream_filter_append($this->fileHandle, $filter);
         }
