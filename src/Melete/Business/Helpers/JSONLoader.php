@@ -20,6 +20,9 @@ class JSONLoader extends AbstractConfigLoader implements LoaderInterface
     }
     
     public function loadConfig() {
+	if (! is_resource($this->getFileHandle())) {
+		return false;
+	}
 	if ($this->json == "" || is_null($this->json)) {
 		if (! rewind($this->getFileHandle())) {
 			throw new \Exception("Could not rewind file pointer");
@@ -51,7 +54,6 @@ class JSONLoader extends AbstractConfigLoader implements LoaderInterface
 
     public function unloadConfig() {
         $this->json = "";
-	rewind($this->getFileHandle());
         fclose($this->getFileHandle());
     }
     
