@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'PHPUnit\\' => array($vendorDir . '/phpunit/phpunit'),
+    'PHPUnit\\' => array($vendorDir . '/phpunit/phpunit/PHPUnit'),
     'Melete\\' => array($baseDir . '/src/Melete'),
 );
