@@ -8,7 +8,7 @@ namespace Melete\Tests;
  *
  * @author Dan
  */
-class TestCase extends Illuminate\Foundation\Testing\TestCase
+class TestCase extends \Illuminate\Foundation\Testing\TestCase
 {
    /**
    * Default preparation for each test
