@@ -1,5 +1,7 @@
 <?php
 
+namespace Melete\Database;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -12,7 +14,7 @@
  */
 class IlluminateDatabaseBootstrap
 {
-    //put your code here
+
 }
 
 ?>

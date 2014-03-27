@@ -1,10 +1,12 @@
 <?php
+namespace Melete\Business;
+
 /**
  * Description of UserList
  *
  * @author Dan
  */
-class UserList extends SplQueue
+class UserList extends \SplQueue
 {
     public function clearUsers() {
         if ($this->users->isEmpty()) {

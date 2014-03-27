@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'PHPUnit\\' => array($vendorDir . '/phpunit/phpunit/PHPUnit'),
+    'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Melete\\' => array($baseDir . '/src/Melete'),
 );
